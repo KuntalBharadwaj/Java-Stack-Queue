@@ -1,20 +1,17 @@
-import java.util.*;
-
-class StockSpan {
-    static int[] calculateSpan(int price[]) {
-        Stack<Integer> stack = new Stack<>();
-        int span[] = new int[price.length];
-
-        for (int i = 0; i < price.length; i++) {
-            while (!stack.isEmpty() && price[stack.peek()] <= price[i]) {
-                stack.pop();
+class CircularTour {
+    static int findTour(int[] petrol, int[] distance) {
+        int start = 0, deficit = 0, balance = 0;
+        for (int i = 0; i < petrol.length; i++) {
+            balance += petrol[i] - distance[i];
+            if (balance < 0) {
+                start = i + 1;
+                deficit += balance;
+                balance = 0;
             }
-            span[i] = (stack.isEmpty()) ? (i + 1) : (i - stack.peek());
-            stack.push(i);
         }
-        return span;
+        return (balance + deficit >= 0) ? start : -1;
     }
 }
 
-// Input: [100, 80, 60, 70, 60, 75, 85]
-// Output: [1, 1, 1, 2, 1, 4, 6]
+// Input: Petrol: [4, 6, 7, 4], Distance: [6, 5, 3, 5]
+// Output: 2
